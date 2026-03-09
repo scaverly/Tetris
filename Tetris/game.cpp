@@ -6,7 +6,6 @@ Game::Game() {
 	blocks = GetAllBlocks();
 	currentBlock = GetRandomBlock();
 	nextBlock = GetRandomBlock();
-
 }
 
 Block Game::GetRandomBlock() {
@@ -32,6 +31,12 @@ void Game::HandleInput()
 {
 	int keyPressed = GetKeyPressed();
 	switch (keyPressed) {
+	case KEY_UP:
+		rotateBlock();
+		break;
+	case KEY_W:
+		rotateBlock();
+		break;
 	case KEY_LEFT:
 		MoveBlockLeft();
 		break;
@@ -84,4 +89,12 @@ bool Game::IsBlockOutside()
 		}
 	}
 	return false;
+}
+
+void Game::rotateBlock()
+{
+	currentBlock.Rotate();
+	if (IsBlockOutside()) {
+		currentBlock.UndoRotation();
+	}
 }
