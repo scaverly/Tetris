@@ -24,6 +24,7 @@ int main() {
 	Game game = Game();
 
 	while (WindowShouldClose() == false) {
+		UpdateMusicStream(game.music);
 		game.HandleInput();
 		if (EventTriggered(0.2)) {
 			game.MoveBlockDown();
@@ -41,7 +42,10 @@ int main() {
 		sprintf_s(scoreText, "%d", game.score);
 		Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
 
-		DrawTextEx(font, scoreText, { 310 + (170 - textSize.x) / 2, 65}, 38, 2, WHITE);
+		float textPosX = 320 + (170 - textSize.x) / 2;
+
+		DrawTextEx(font, scoreText, { textPosX, 65 }, 38, 2, WHITE);
+
 		DrawRectangleRounded({320, 215, 170, 180}, 0.3, 6, ligthBlue);
 		game.Draw();
 		EndDrawing();
