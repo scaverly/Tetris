@@ -31,37 +31,47 @@ void Game::Draw() {
 void Game::HandleInput()
 {
 	int keyPressed = GetKeyPressed();
+
 	if (gameOver && keyPressed != 0) {
-		gameOver = false;
 		Reset();
-	}
-	switch (keyPressed) {
-	case KEY_UP:
-		RotateBlock();
-		break;
-	case KEY_W:
-		RotateBlock();
-		break;
-	case KEY_LEFT:
-		MoveBlockLeft();
-		break;
-	case KEY_A:
-		MoveBlockLeft();
-		break;
-	case KEY_RIGHT:
-		MoveBlockRight();
-		break;
-	case KEY_D:
-		MoveBlockRight();
-		break;
-	case KEY_S:
-		MoveBlockDown();
-		break;
-	case KEY_DOWN:
-		MoveBlockDown();
-		break;
+		gameOver = false;
 	}
 
+	if (keyPressed == KEY_UP || keyPressed == KEY_W) {
+		RotateBlock();
+	}
+	static float holdTimer = 0;
+	static double lastStepTime = 0;
+
+	float deltaTime = GetFrameTime();
+	const float DAS_DELAY = 0.25f;
+	const float DAS_SPEED = 0.10f;
+
+	bool isLeftPressed = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
+	bool isRightPressed = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
+	bool isDownPressed = IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S);
+
+	if (isLeftPressed || isRightPressed || isDownPressed) {
+		if (holdTimer == 0) {
+			if (isLeftPressed) MoveBlockLeft();
+			if (isRightPressed) MoveBlockRight();
+			if (isDownPressed) MoveBlockDown();
+		}
+
+		holdTimer += deltaTime;
+
+		if (holdTimer >= DAS_DELAY) {
+			if (GetTime() - lastStepTime >= DAS_SPEED) {
+				if (isLeftPressed) MoveBlockLeft();
+				if (isRightPressed) MoveBlockRight();
+				if (isDownPressed) MoveBlockDown();
+				lastStepTime = GetTime();
+			}
+		}
+	}
+	else {
+		holdTimer = 0;
+	}
 }
 
 void Game::MoveBlockLeft() {
