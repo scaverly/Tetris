@@ -19,7 +19,7 @@ int main() {
 	InitWindow(500, 620, "Tetris");
 	SetTargetFPS(60);
 
-	Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
+	Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 250);
 
 	Game game = Game();
 
@@ -41,8 +41,7 @@ int main() {
 		sprintf_s(scoreText, "%d", game.score);
 		Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
 
-
-		DrawTextEx(font, scoreText, { 320 + (170 - textSize.x)/2, 65}, 38, 2, WHITE);
+		DrawTextEx(font, scoreText, { 310 + (170 - textSize.x) / 2, 65}, 38, 2, WHITE);
 		DrawRectangleRounded({320, 215, 170, 180}, 0.3, 6, ligthBlue);
 		game.Draw();
 		EndDrawing();
